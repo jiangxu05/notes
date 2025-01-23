@@ -1,3 +1,5 @@
+// 大量输出文本不会！！！学方法
+
 #include<iostream>
 using namespace std;
 int main()
