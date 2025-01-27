@@ -70,7 +70,8 @@
 ## 图片语法
 插入图片Markdown语法代码：`![图片alt](图片链接 "图片title")。`
 ![这是壁纸](https://markdown.com.cn/assets/img/shiprock.c3b9a023.jpg)。
-
+- 一定要顶格
+- 地址里面的空格要用%20替代
 
 ## 扩展语法
 #### 表格
