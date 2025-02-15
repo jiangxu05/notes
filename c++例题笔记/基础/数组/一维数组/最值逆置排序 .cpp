@@ -34,13 +34,13 @@ int main(){
     for(int i = 0; i < 10; i++){                //外层循环控制比较的轮数
         for(int j = 0; j < 10 - i - 1; j++){    //内层循环控制每轮比较的次数
             if(arr2[j] > arr2[j+1]){            //如果前一个元素大于后一个元素，交换位置
-                int temp = arr2[j];             
+                int temp = arr2[j];             //千万别忘记int
                 arr2[j] = arr2[j+1];
                 arr2[j+1] = temp;
             }
         }
     } 
-
+//别忘记了打印步骤
 
     return 0;
 }
