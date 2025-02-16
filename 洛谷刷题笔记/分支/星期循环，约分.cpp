@@ -29,15 +29,16 @@ int main(){
 //using namespace std;
 #include<algorithm>
 #include<numeric>
+
 //洛谷编译器识别不出来：手写gcd函数
-/*int gcd(int a, int b) {
+int gcd(int a, int b) {
     while (b != 0) {
         int t = b;
         b = a % b;
         a = t;
     }
     return a;
-}*/
+}
 
 int main1()
 {
