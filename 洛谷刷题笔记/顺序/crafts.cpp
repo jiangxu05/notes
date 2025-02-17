@@ -1,15 +1,9 @@
 #include<iostream>
-#include<cmath>
-#include<iomanip>
-
 using namespace std;
-
-int main(){
-    double a,b,c;
+int main()
+{
+    int a,b,c,d;
     cin>>a>>b>>c;
-    double p = (a+b+c)/2;
-    double s = sqrt(p*(p-a)*(p-b)*(p-c));
-    cout<<fixed<<setprecision(1)<<s<<endl;
-    return 0;
-
+    d=((a*b*c)/8)/1024;
+    cout<<"水平分辨率为"<<a<<"， 垂直分辨率为"<<b<<"， 颜色位数为"<<c<<"的图像大小为"<<d<<"KB";
 }
