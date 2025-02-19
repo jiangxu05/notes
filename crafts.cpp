@@ -1,22 +1,52 @@
 #include<iostream>
+#include<cstring>
+#include<cmath>
+
 using namespace std;
-int main()
-{
-    int a,b,c,d;
-    cin>>a>>b>>c;
-    d=((a*b*c)/8)/1024;
-    cout<<"水平分辨率为"<<a<<"， 垂直分辨率为"<<b<<"， 颜色位数为"<<c<<"的图像大小为"<<d<<"KB";
+
+bool book [100000001];
+
+void isprime(int b){
+    memset(book,true,sizeof(book));
+    book[1] = false;
+
+    int n =sqrt(b);
+    for(int i = 2 ; i <= n ; i++){
+        if (book[i]){
+            for(int j = 2; j <= b / i ; j++){
+                book[ i * j ] = false;
+            }
+        }
+    }
+    
 }
 
+bool ishuiwen(int num){
+    int temp = num , ans = 0;
+    while(temp != 0){
+        ans = ans * 10 + temp % 10;
+        temp /= 10;
+    }
+    if (ans == num) 
+    return true;
+    else
+    return false;
+}
 
-#include<iostream>
-using namespace std;
-int main (){
-    int t1,t0,h1,h0;
-    cin>>t1>>t0>>h1>>h0;
-    cout<<"G="<<(t1-t0)/(h1-h0)*100.0<<"C"<<endl;
-    cout<<"Dt="<<(h1-h0)/(t1-t0)*1.0<<"m"<<endl;
+int main(){
+    int a,b;
+    cin >> a >> b;
+    if (b >= 10000000) // 如果 b 超过 10000000，则限制为 9999999
+        b = 9999999;
+
+    isprime(b);
+    if (a > b) // 如果 a > b，直接结束
+        return 0;
+    
+    
+    if (a %2 == 0) a++;
+    for (int i = a; i <= b; i += 2){
+        if (book [i] && ishuiwen(i)) cout << i <<endl;
+    }
     return 0;
 }
-
-
