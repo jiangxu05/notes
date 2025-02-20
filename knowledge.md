@@ -23,6 +23,7 @@ npm 是 Node.js 的默认包管理器，它随着 Node.js 一起安装。npm 提
 - 管理项目依赖关系，通过 package.json 文件跟踪。
 - 运行脚本，比如启动应用、运行测试等。
 
+- npm i ：npm i 是 npm install 命令的简写形式。
 
 ## nvm (Node Version Manager)
 
@@ -31,3 +32,12 @@ nvm 是一个开源的版本管理工具，用于在同一个系统上安装和�
 - 切换当前使用的 Node.js 版本。
 - 设置默认的 Node.js 版本。
 - 管理 npm 版本与 Node.js 版本的关联
+
+## Hexo 
+Hexo 是一个快速、简洁且高效的博客框架，它允许用户使用 Markdown（或其他渲染引擎）编写文章，然后生成静态网页。
+- hexo g : hexo generate 的缩写，用于生成静态文件。   
+> 当你运行 hexo g 命令时，Hexo 会根据你的博客配置和 Markdown 文件，生成 HTML、CSS 和 JavaScript 等静态文件，并将它们放置在 public 目录下。
+- hexo d : hexo deploy 的缩写，用于部署你的博客到服务器上。  
+> hexo d 命令会根据你在 _config.yml 文件中的部署配置，将 public 目录下的文件上传到指定的服务器或仓库（例如 GitHub Pages、GitLab Pages、Netlify 等）。
+
+

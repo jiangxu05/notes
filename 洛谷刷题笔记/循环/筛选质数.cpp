@@ -20,7 +20,7 @@ void findPrimes(int n) {
         }
     }
 
-    // 输出所有质数abc
+    // 输出所有质数
     cout << "质数列表: ";
     for (int i = 2; i <= n; i++) {
         if (isPrime[i]) cout << i << endl;

@@ -34,3 +34,21 @@
     return 0;
  }
 
+//输入质数 n； 求最大的因数，从 2开始遍历，小于根号n，之前学的性质；
+#include<iostream>
+#include<cmath>
+
+using namespace std;
+
+int main (){
+
+    int n;
+    cin >> n;
+
+    for(int i = 2 ; i < sqrt(n) ; i++){ //注意2也是质数
+        if (n % i == 0) cout<< n / i;
+    }
+
+    return 0;
+}
+
