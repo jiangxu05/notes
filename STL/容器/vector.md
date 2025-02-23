@@ -18,7 +18,7 @@ void printvector(vector<int>& v){
 void test01(){
     vector<int>v1; //默认构造 无参构造
     for ( int i = 0; i < 10; i++){
-        v1.push_back(i);
+        v1.push_back(i); //自动从左往右存入的
     }
     printvector(v1);
 }
