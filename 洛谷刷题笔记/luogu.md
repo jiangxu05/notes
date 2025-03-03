@@ -186,3 +186,166 @@ int main()
 校验码转换错误：将余数转换为字符时，错误地使用减法而非加法，导致校验码字符不正确。*/
 
 ```
+### **找出给定范围 [a, b] 内的所有回文质数。回文质数是指既是质数，又是回文数的数。例如，11 是一个回文质数，因为它既是质数，又是回文数。**
+
+- 根据数学性质优化范围（例如，偶数位数的回文数不可能是质数，除了 11）
+- 埃氏筛法生成质数表;
+book[i] 为 true 表示 i 是质数，false 表示 i 不是质数
+
+```
+#include<bits/stdc++.h>
+using namespace std;
+
+bool book[100000001];
+```
+> bool book[100000001];：定义一个布尔数组 book，用于标记质数。数组大小为 100000001，可以处理最大到 100000000 的数。
+
+#### 埃氏筛法生成质数表
+```
+void prime(int b) {
+    book[1] = false; // 1 不是质数
+    int n = sqrt(b); // 只需要筛到 sqrt(b)
+    for (int i = 2; i <= n; i++) {
+        if (book[i]) { // 如果 i 是质数
+            for (int j = 2; j <= b / i; j++) {
+                book[i * j] = false; // 将 i 的倍数标记为非质数
+            }
+        }
+    }
+}
+```
+> memset(book, true, sizeof(book));
+> memset 是一个 C/C++ 标准库函数，用于将一段内存区域设置为特定的值。这里 memset 将 book 数组的所有元素初始化为 true。  
+
+> 注意sizeof(book) 返回数组 book 的总大小（以字节为单位）。这行代码的作用是假设所有数都是质数，后续再筛除非质数。
+
+
+book[1] = false;：1 不是质数，手动标记为 false。
+
+
+#### 判断回文数
+```
+bool isHWS(int num) {
+    int temp = num, ans = 0;
+    while (temp != 0) {
+        ans = ans * 10 + temp % 10; // 将 temp 的最后一位加到 ans 中，实现  “数字反转”。
+        temp /= 10; //去掉 temp 的最后一位。一定要记得这一步啊
+    }
+    if (ans == num) // 如果反转后的数字等于原数字
+        return true;
+    else
+        return false;
+}
+```
+> 注意数据类型是bool
+
+##### 注释
+通过 ans = ans * 10 + temp % 10 和 temp /= 10 实现数字反转。
+> 例子：反转数字 123
+- 第一次循环后``` ans=3 ; temp=12```
+- 第二次循环```ans=ans=32 ;temp=1```就这样的往下。。。。。略
+#### 主逻辑
+```
+int main() {
+    int a, b;
+    cin >> a >> b; // 输入范围 [a, b]
+    if (b >= 10000000) // 如果 b 超过 10000000，则限制为 9999999
+        b = 9999999;
+
+    prime(b); // 生成质数表
+
+    if (a > b) // 如果 a > b，直接结束
+        return 0;
+
+    if (a % 2 == 0) a++; // 如果 a 是偶数，则从 a+1 开始（因为偶数不可能是质数，除了 2）
+    for (int i = a; i <= b; i += 2) { // 遍历奇数
+        if (book[i] && isHWS(i)) // 如果 i 是质数且是回文数
+            cout << i << endl; // 输出 i
+    }
+    return 0;
+}
+```
+
+#### 优化方法防超时
+- 偶数位数的回文数不可能是质数（除了 11）
+```
+```
+- 跳过偶数
+```
+代码通过 if (a % 2 == 0) a++; 和 for (int i = a; i <= b; i += 2) 跳过所有偶数（除了 2），因为偶数不可能是质数。
+```
+## 阶乘之和
+```
+//对于我来说还是有点难
+//P1009
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 高精度乘法：计算 a * b，结果存储在 a 中
+void multiply(vector<int>& a, int b) {
+    int carry = 0; // 进位
+    for (int i = 0; i < a.size(); i++) {
+        int product = a[i] * b + carry;
+        a[i] = product % 10; // 当前位
+        carry = product / 10; // 进位
+    }
+    while (carry) { // 处理剩余的进位
+        a.push_back(carry % 10);
+        carry /= 10;
+    }
+}
+
+// 高精度加法：将 b 加到 a 中
+void add(vector<int>& a, const vector<int>& b) {
+    int carry = 0; // 进位
+    for (int i = 0; i < b.size(); i++) {
+        if (i < a.size()) {
+            int sum = a[i] + b[i] + carry;
+            a[i] = sum % 10; // 当前位
+            carry = sum / 10; // 进位
+        } else {
+            int sum = b[i] + carry;
+            a.push_back(sum % 10); // 当前位
+            carry = sum / 10; // 进位
+        }
+    }
+    while (carry) { // 处理剩余的进位
+        a.push_back(carry % 10);
+        carry /= 10;
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> sum = {0}; // 存储最终结果 S，初始为 0
+    vector<int> factorial = {1}; // 存储当前阶乘，初始为 1! = 1
+
+    for (int i = 1; i <= n; i++) {
+        multiply(factorial, i); // 计算 i!
+        add(sum, factorial); // 将 i! 加到 S 中
+    }
+
+    // 输出结果
+    for (int i = sum.size() - 1; i >= 0; i--) {
+        cout << sum[i];
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+
+
+//复杂度：
+//假设你有一个任务：在一堆书里找到一本特定的书。
+//方法 1：一本一本地找你从第一本开始，一本一本地检查，直到找到目标书。
+//如果书的总数是 n那么最坏情况下你需要检查 n次。我们说这个方法的时间复杂度是 O(n)
+//方法 2：书已经按字母顺序排好
+//你可以用二分查找法：每次从中间开始找，排除一半的书。
+//每次查找都能排除一半的书，所以最多需要 log2（n）。
+```
+
