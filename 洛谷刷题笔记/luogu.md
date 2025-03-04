@@ -349,3 +349,98 @@ int main() {
 //每次查找都能排除一半的书，所以最多需要 log2（n）。
 ```
 
+```
+
+//输入质数 n； 求最大的因数，从 2开始遍历，小于根号n，之前学的性质；
+#include<iostream>
+#include<cmath>
+
+using namespace std;
+
+int main (){
+
+    int n;
+    cin >> n;
+
+    for(int i = 2 ; i < sqrt(n) ; i++){ //注意2也是质数
+        if (n % i == 0) cout<< n / i;
+    }
+
+    return 0;
+}
+```
+
+```
+//输入 n；打印矩形，直角三角形（直角在右边）
+//两个循环 一个行数一个列数，0用iomanip
+#include<iostream>
+#include<iomanip>
+
+using namespace std;
+
+int main(){
+    int n;
+    cin >> n;
+
+    int num = 1;
+
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= n; j++){
+            cout << setw(2)<<setfill('0')<<num++;
+        }
+        cout <<endl;
+    }
+    
+    cout <<endl;
+
+    num = 1; //记得重赋值
+    for (int i = 1; i <= n; i++){
+
+        for(int j = 1; j <= n - i ; j++) cout << "  ";
+
+        for(int k = 1; k <= i; k++) {
+            cout<<setw(2)<<setfill('0')<<num++;
+        }
+
+        cout<<endl;
+    }
+    return 0;
+}
+```
+## 排序
+```
+    vector<int>v1; //默认构造 无参构造
+    for ( int i = 0; i < n; i++){
+        
+        cin >> num  ;
+        v1.push_back(num);
+
+    }
+    sort(v1.begin(),v1.end());
+```
+## 筛选质数
+```
+
+void findPrimes(int n) {
+    // 初始化一个布尔数组，表示每个数是否为质数
+    vector<bool> isPrime(n + 1, true);  // 默认所有数都是质数
+    isPrime[0] = isPrime[1] = false;    // 0 和 1 不是质数
+
+    // 从 2 开始遍历到 sqrt(n)
+    for (int i = 2; i * i <= n; i++) {
+        if (isPrime[i]) {  // 如果 i 是质数
+            // 将 i 的所有倍数标记为非质数
+            for (int j = i * i; j <= n; j += i) {//从 i的平方开始标记，因为比i的平方小的已经被更小的质数标记过了；
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    // 输出所有质数
+    cout << "质数列表: ";
+    for (int i = 2; i <= n; i++) {
+        if (isPrime[i]) cout << i << endl;
+    }
+    cout << endl;
+}
+```
