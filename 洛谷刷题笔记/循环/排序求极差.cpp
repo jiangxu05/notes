@@ -17,8 +17,6 @@ int main(){
         v1.push_back(num);
 
     }
-    
-    
     sort(v1.begin(),v1.end());
 
 cout << v1.back() - v1.front();
