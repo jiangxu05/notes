@@ -169,3 +169,134 @@ int main() {
 
     return 0;
 }
+
+//小 Y 的桌子上放着 n 个苹果从左到右排成一列，编号为从 1 到 n。
+//小苞是小 Y 的好朋友，每天她都会从中拿走一些苹果。
+//每天在拿的时候，小苞都是从左侧第 1 个苹果开始、每隔 2 个苹果拿走 1 个苹果。随后小苞会将剩下的苹果按原先的顺序重新排成一列。
+//小苞想知道，多少天能拿完所有的苹果，而编号为 n 的苹果是在第几天被拿走的？
+//我的思路：动态数组不断更新，直到数组为空，总天数daysall，取n为dayn。
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n; // 输入苹果的数量
+    vector<int> apples(n);
+    for (int i = 0; i < n; i++) apples[i] = i + 1; // 初始化苹果编号
+
+    int days = 0;
+    int dayn = 0;
+
+    while (!apples.empty()) {
+        days++; // 天数增加
+        vector<int> remain; // 存储剩下的苹果
+        for (int i = 0; i < apples.size(); i++) {
+            if ((i) % 3 != 0) remain.push_back(apples[i]);// 每隔2个苹果拿走1个苹果（索引为0, 3, 6,...的苹果被拿走）
+            else if (apples[i] == n) dayn = days;
+        }
+        apples = remain; // 更新苹果列表
+    }
+
+    cout << days << " " << dayn << endl; // 输出总天数和编号为 n 的苹果被拿走的天数
+    return 0;
+}
+//以上解法只有90分，内存过大；
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n; // 输入苹果的数量
+
+    int days = 0;
+    int dayn = 0;
+
+    // 使用一个数组标记苹果是否被拿走
+    vector<bool> removed(n + 1, false); // removed[i] = true 表示编号为i的苹果被拿走
+    int remaining = n; // 剩余苹果的数量
+
+    while (remaining > 0) {
+        days++; // 天数增加
+        int takeCount = 0; // 当前拿走的苹果数量
+        for (int i = 1; i <= n; i++) {
+            if (!removed[i]) { //如果当前苹果未被拿走，则进入逻辑。
+                takeCount++;
+                if (takeCount % 3 == 1) { // 每隔2个苹果拿走1个苹果
+                    removed[i] = true;
+                    remaining--;
+                    if (i == n) {
+                        dayn = days; // 记录编号为n的苹果被拿走的天数
+                    }
+                }
+            }
+        }
+    }
+
+    cout << days << " " << dayn << endl; // 输出总天数和编号为n的苹果被拿走的天数
+    return 0;
+}
+
+
+//数学思路
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n; // 输入苹果的数量
+
+    int days = 0;
+    int dayn = 0;
+    int pos = n; // 编号为n的苹果的当前位置，
+
+    while (pos > 0) {
+        days++;
+        if (pos % 3 == 1) { // 如果当前位置是每隔2个苹果拿走1个苹果的位置
+            dayn = days;
+            break;
+        }
+        pos -= pos / 3; // 更新位置，神奇之处。，每次操作大约拿走 1/3 的苹果
+    }
+
+    cout << days << " " << dayn << endl; // 输出总天数和编号为n的苹果被拿走的天数
+    return 0;
+}//超时？
+
+//
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n; // 输入苹果的数量
+
+    int days = 0; // 记录总天数
+    int dayn = 0; // 记录编号为n的苹果被拿走的天数
+    int pos = n; // 编号为n的苹果的当前位置
+
+    // 计算总天数
+    int remaining = n; // 剩余苹果的数量
+    while (remaining > 0) {
+        days++; // 天数增加
+        remaining -= (remaining + 2) / 3; // 每天拿走大约 1/3 的苹果
+    }
+
+    // 计算编号为n的苹果被拿走的天数
+    pos = n; // 重置位置
+    while (pos > 0) {
+        dayn++; // 天数增加
+        if (pos % 3 == 1) { // 如果当前位置是每隔2个苹果拿走1个苹果的位置
+            break;
+        }
+        pos -= (pos + 2) / 3; // 更新位置
+    }
+
+    cout << days << " " << dayn << endl; // 输出总天数和编号为n的苹果被拿走的天数
+    return 0;
+}
+//为什么要remaining➕2？
+//如果不加就会向下取整，加2就会向上取整。
