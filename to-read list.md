@@ -2,6 +2,7 @@
 - [Markdown 基本语法](https://markdown.com.cn/basic-syntax/)
 - [菜鸟教程Git](https://www.runoob.com/git/git-tutorial.html)
 - [菜鸟教程vscode](https://www.runoob.com/vscode/vscode-code-command.html)
+- [最牛逼的学习网站](https://oiwiki.com)
 > 装了zsh吗
 zsh的配置文件：~/.zshrc
 如果没有装，是iterm或默认的，那就是～/.bashrc，在里面加入
