@@ -55,3 +55,18 @@ int main(){
 
     return 0;
 }
+
+#include<iostream>
+using namespace std;
+long long a,b[100][100];
+int main() {
+    cin>>a;
+    b[1][1]=1;
+    for(int i=1;i<=a;i++){
+    	for(int j=1;j<=i;j++){
+    		b[i][j]+=b[i-1][j-1]+b[i-1][j];
+			cout<<b[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+}

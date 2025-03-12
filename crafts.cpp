@@ -102,7 +102,7 @@ int main() {
             //string::npos 是一个常量，表示未找到。
             //text 中查找子串 word，从位置 pos 开始查找。text.find(word, pos) 返回子串 word 在 text 中第一次出现的位置（索引），如果没找到则返回 string::npos。
             text.replace(pos, word.length(), "<censored>");
-            pos += 10; // "<censored>" 的长度
+            pos += 10; // "<censored>" 的长度ce
             //见隔壁的md笔记STL的vector。
             count++;
         }
@@ -117,3 +117,87 @@ int main() {
 
     return 0;
 }
+
+//将一个 9×9 的正方形区域划分为 9 个 3×3 的正方形宫位，要求 1 到 9 这九个数字中的每个数字在每一行、每一列、每个宫位中都只能出现一次。
+//本题并不要求你写程序解决这个问题，只是对每个填好数字的九宫格，判断其是否满足游戏规则的要求。
+//输入首先在第一行给出一个正整数 n（≤10），随后给出 n 个填好数字的九宫格。每个九宫格分 9 行给出，每行给出 9 个数字，其间以空格分隔。
+//对每个给定的九宫格，判断其中的数字是否满足游戏规则的要求。满足则在一行中输出 1，否则输出 0。
+//难点，每行每列的检索，
+//二维向量存储，数组存贮结果，假设所有满足；读取九宫格；
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int main(){
+    int n;
+    cin >> n;
+    vector<vector<int>> jiugongge(9, vector<int>(9));
+    vector<int> ans(n, 1); // 初始化结果为1，假设所有九宫格都满足规则
+
+    for(int i = 0; i < n; i++){
+        // 读取九宫格
+        for(int j = 0; j < 9; j++){
+            for(int k = 0; k < 9; k++){
+                cin >> jiugongge[j][k];
+            }
+        }
+
+        // 检查每行
+        for(int j = 0; j < 9; j++){
+            vector<int> row(9, 0);
+            for(int k = 0; k < 9; k++){
+                row[jiugongge[j][k]-1]++;
+            }
+            if(find(row.begin(), row.end(), 2) != row.end()){
+                //这里的 2 表示某个数字在当前行中出现了两次。注意之前的row(9,0)表示9个0;
+                ans[i] = 0;
+                break;
+            }
+        }
+
+        // 如果行检查已经失败，跳过列和宫位检查
+        if(ans[i] == 0) continue;//continue 的作用是跳过当前循环的剩余部分，直接进入下一次循环。
+
+        // 检查每列
+        for(int j = 0; j < 9; j++){
+            vector<int> col(9, 0);
+            for(int k = 0; k < 9; k++){
+                col[jiugongge[k][j]-1]++;
+            }
+            if(find(col.begin(), col.end(), 2) != col.end()){
+                ans[i] = 0;
+                break;
+            }
+        }
+
+        // 如果列检查已经失败，跳过宫位检查
+        if(ans[i] == 0) continue;
+
+        // 检查每个宫位
+        //内层两个循环（x 和 y）用于遍历当前宫位的每个单元格。
+        for(int j = 0; j < 3; j++){
+            for(int k = 0; k < 3; k++){
+                vector<int> block(9, 0);
+                for(int x = 0; x < 3; x++){
+                    for(int y = 0; y < 3; y++){
+                        block[jiugongge[j*3+x][k*3+y]-1]++;
+                    }
+                }
+                if(find(block.begin(), block.end(), 2) != block.end()){
+                    ans[i] = 0;
+                    break;
+                }
+            }
+            if(ans[i] == 0) break;
+        }
+    }
+
+    // 输出结果
+    for(int i = 0; i < n; i++){
+        cout << ans[i] << endl;
+    }
+
+    return 0;
+}
+
