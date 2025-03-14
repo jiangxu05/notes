@@ -40,9 +40,11 @@ int main() {
     // 逐行输出
     for (int row = 0; row < 5; row++) {
         for (int i = 0; i < n; i++) {
-            char ch = number[i];
+            char ch = number[i];//例如，如果输入是 "0123456789"，那么 number[0] 是 '0'，number[1] 是 '1'，依此类推。
             int digit = ch - '0'; // 将字符转换为数字
             cout << digitPatterns[digit][row]; // 输出当前行的点阵
+            //如果 digit = 0 且 row = 0，那么 digitPatterns[0][0] 是 "XXX"。
+            
             if (i < n - 1) { // 如果不是最后一个数字，输出间隔
                 cout << ".";
             }
