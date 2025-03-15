@@ -26,67 +26,55 @@
 // 输出样例 1：
 // L1-4 is qianDao.
 #include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
 int main() {
-    int zongti, yizuo; // 总题数和已做题数
-    cin >> zongti >> yizuo;
-    cin.ignore(); // 忽略换行符
-    
-    string timu; // 存储每道题目
-    int yijing_zuo = 0; // 已经做的题目数
-    int dangqian = 0; // 当前看到第几题
-    
-    while(getline(cin, timu)) {
-        dangqian++;
-        
-        // 检查是否包含qiandao或easy
-        bool tiaoguo = false;
-        string xiaoxie = timu;
-        // 转换为小写进行检查
-        for(int i = 0; i < xiaoxie.length(); i++) {
-            if(xiaoxie[i] >= 'A' && xiaoxie[i] <= 'Z') {
-                xiaoxie[i] = tolower(xiaoxie[i]);
-            }
-        }
-        if(xiaoxie.find("qiandao") != string::npos || 
-           xiaoxie.find("easy") != string::npos) {
-            tiaoguo = true;
-        }
-        
-        // 如果不是签到题就做
-        if(!tiaoguo) {
-            yijing_zuo++;
-            // 如果做的题目数等于要求的数量,输出下一题
-            if(yijing_zuo == yizuo) {
-                // 继续找下一个非签到题
-                while(dangqian < zongti) {
-                    getline(cin, timu);
-                    dangqian++;
-                    // 检查下一题是否为签到题
-                    xiaoxie = timu;
-                    for(int i = 0; i < xiaoxie.length(); i++) {
-                        if(xiaoxie[i] >= 'A' && xiaoxie[i] <= 'Z') {
-                            xiaoxie[i] = tolower(xiaoxie[i]);
-                        }
-                    }
-                    // string::npos是一个特殊值,表示"没有找到"
-                    // find()函数在找不到子串时会返回string::npos
-                    // 所以 find() == string::npos 意味着没找到这个子串
-                    // find() != string::npos 意味着找到了这个子串
-                    if(xiaoxie.find("qiandao") == string::npos && // 如果没找到"qiandao"
-                       xiaoxie.find("easy") == string::npos) {     // 并且没找到"easy"
-                        cout << timu << endl;
-                        return 0;
-                    }
-                }
-                cout << "Wo AK le" << endl;
-                return 0;
-            }
+    int N, M;
+    cin >> N >> M; // 输入题目总数 N 和已做完的题目数 M
+
+    vector<string> problems; // 存储所有题目
+    vector<string> validProblems; // 存储吉老师会做的题目
+
+    // 读取所有题目
+    for (int i = 0; i < N; i++) {
+        string problem;
+        getline(cin >> ws, problem); // 读取一行题目（包括空格）
+        //cin >> ws 会清除输入流中的空白字符，确保 getline 读取到正确的输入。
+        problems.push_back(problem);
+    }
+
+    // 过滤吉老师会做的题目
+    for (const string& problem : problems) {
+        //const 表示 problem 是只读的，不能修改。
+        //string& 表示 problem 是对容器中元素的引用，避免拷贝字符串的开销。
+        //: 是范围 for 循环的语法符号。
+        // 如果题目不包含 "qiandao" 和 "easy"，则加入 validProblems
+        if (problem.find("qiandao") == string::npos && problem.find("easy") == string::npos) {
+            //npos 是 std::string 的一个静态常量，表示一个无效的位置（通常是一个很大的值，比如 size_t 的最大值）。
+            //当 find 未找到子字符串时，返回 npos。
+            //如果题目中不包含 "qiandao" 和 "easy"，则将该题目加入 validProblems。
+
+            validProblems.push_back(problem);
         }
     }
-    
-    cout << "Wo AK le" << endl;
+
+    // 判断吉老师是否已经做完所有题目
+    if (M >= validProblems.size()) {
+        cout << "Wo AK le" << endl;
+    } else {
+        cout << validProblems[M] << endl; // 输出当前正在做的题目
+    }
+
     return 0;
 }
+
+//示例
+//vector<string> problems = {"Problem A", "Problem B", "Problem C"};
+//for (const string& problem : problems) {
+//    cout << problem << endl;
+//}
+//Problem A
+//Problem B
+//Problem C

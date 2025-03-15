@@ -28,47 +28,34 @@
 // 112358
 #include <iostream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-// 获取结果:从原始字符串得到结果
-string huoqu_jieguo(string yuanshi) {
-    string jieguo = "";
-    // 从第二个数字开始比较
-    for(int i = 1; i < yuanshi.length(); i++) {
-        // 转换字符串到数字来判断奇偶
-        int dangqian_shuzi = yuanshi[i] - '0';
-        int qian_shuzi = yuanshi[i-1] - '0';
-        
-        // 如果两个数字都是奇数或都是偶数
-        if(dangqian_shuzi % 2 == qian_shuzi % 2) {
-            // 找到较大的那个数字并加到结果里
-            if(yuanshi[i] > yuanshi[i-1]) {
-                jieguo += yuanshi[i];
-            } else {
-                jieguo += yuanshi[i-1];
-            }
+// 定义函数，根据算法生成字符串 s
+string generateS(string a) {
+    string s;
+    for (size_t i = 1; i < a.length(); i++) {
+        if ((a[i] - '0') % 2 == (a[i - 1] - '0') % 2) { // 判断奇偶性
+            s += max(a[i], a[i - 1]); // 拼接较大的字符
         }
     }
-    return jieguo;
+    return s;
 }
 
 int main() {
-    string zifuchuan1, zifuchuan2;
-    getline(cin, zifuchuan1);
-    getline(cin, zifuchuan2);
-    
-    // 获取两个字符串的结果
-    string jieguo1 = huoqu_jieguo(zifuchuan1);
-    string jieguo2 = huoqu_jieguo(zifuchuan2);
-    
-    // 如果结果相同,只输出一个
-    if(jieguo1 == jieguo2) {
-        cout << jieguo1 << endl;
+    string a1, a2;
+    getline(cin, a1); // 读取第一个字符串
+    getline(cin, a2); // 读取第二个字符串
+
+    string s1 = generateS(a1); // 生成 s1
+    string s2 = generateS(a2); // 生成 s2
+
+    if (s1 == s2) {
+        cout << s1 << endl; // 如果 s1 和 s2 相同，输出 s1
     } else {
-        // 否则输出两个结果
-        cout << jieguo1 << endl;
-        cout << jieguo2 << endl;
+        cout << s1 << endl; // 否则分别输出 s1 和 s2
+        cout << s2 << endl;
     }
-    
+
     return 0;
 }

@@ -21,6 +21,7 @@ int main() {
     int start = -1;
     
     for(int i = 0; i <= s.length(); i++) {
+        //小于等于而不是小于
         if(i < s.length() && s[i] == '6') {
             if(count == 0) start = i;
             count++;
@@ -28,12 +29,51 @@ int main() {
             if(count > 9) {
                 s.replace(start, count, "27");
             } else if(count > 3) {
-                s.replace(start, count, "9"); 
+                s.replace(start, count, "9"); //这里一定是双引号？
             }
             count = 0;
         }
     }
     
+    cout << s << endl;
+    return 0;
+}
+//以上仅有14，有一个测试点没过，以下满分
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s;
+    getline(cin, s);
+
+    int pos = 0;
+    int cnt = 0;
+//这是因为循环的逻辑在遇到非 '6' 字符时才会处理之前的连续 '6'。如果字符串以连续的 '6' 结尾，循环结束后这些 '6' 就不会被处理。
+    for (size_t i = 0; i < s.length(); i++) { // 修改为 i < s.length()
+        if (s[i] == '6') {
+            if (cnt == 0) pos = i; // 记录连续 '6' 的起始位置
+            cnt++;
+        } else {
+            if (cnt > 9) {
+                s.replace(pos, cnt, "27"); // 替换为 "27"
+                i = pos + 1; // 调整 i 的位置，因为字符串长度可能变化
+            } else if (cnt > 3) {
+                s.replace(pos, cnt, "9"); // 替换为 "9"
+                i = pos; // 调整 i 的位置，因为字符串长度可能变化
+            }
+            cnt = 0; // 重置计数器
+        }
+    }
+
+    // 处理字符串末尾的连续 '6'
+    if (cnt > 9) {
+        s.replace(pos, cnt, "27");
+    } else if (cnt > 3) {
+        s.replace(pos, cnt, "9");
+    }
+
     cout << s << endl;
     return 0;
 }

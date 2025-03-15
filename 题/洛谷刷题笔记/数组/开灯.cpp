@@ -42,7 +42,11 @@ int main() {
         
         // 对于每个倍数,计算灯的编号并改变其状态
         for(int j = 1; j <= t; j++) {
-            int deng_bianhao = floor(j * a); // 计算灯的编号
+            // floor函数用来向下取整,比如:
+            // floor(3.7) = 3
+            // floor(2.1) = 2
+            // floor(-3.7) = -4 
+            int deng_bianhao = floor(j * a); // 计算灯的编号:j*a可能是小数,用floor取整得到灯编号//其实也可以（int）
             deng_zhuangtai[deng_bianhao]++; // 记录按开关的次数
         }
     }
@@ -58,3 +62,4 @@ int main() {
     
     return 0;
 }
+//如果运行时RE，数组越界，直接把大小变大就行啦。。。把【10001】多加几个000就行。

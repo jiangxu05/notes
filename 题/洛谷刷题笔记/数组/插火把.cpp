@@ -1,4 +1,4 @@
-// 话说有一天 linyorson 在“我的世界”开了一个 n×n 的方阵，现在他有 m 个火把和 k 个萤石，分别放在 (x1,y1)∼(xm,ym) 和 (o1,p1)∼(ok,pk) 的位置，没有光并且没放东西的地方会生成怪物。请问在这个方阵中有几个点会生成怪物？
+// 话说有一天 linyorson 在"我的世界"开了一个 n×n 的方阵，现在他有 m 个火把和 k 个萤石，分别放在 (x1,y1)∼(xm,ym) 和 (o1,p1)∼(ok,pk) 的位置，没有光并且没放东西的地方会生成怪物。请问在这个方阵中有几个点会生成怪物？
 
 // P.S. 火把的照亮范围是：
 
@@ -34,53 +34,55 @@
 using namespace std;
 
 int main() {
-    int fangzhen_daxiao, huoba_shuliang, yingshi_shuliang;
-    cin >> fangzhen_daxiao >> huoba_shuliang >> yingshi_shuliang;
+    int n, m, k;
+    cin >> n >> m >> k;
     
     // 创建一个二维数组表示方阵,0表示暗的地方,1表示亮的地方
-    vector<vector<int>> fangzhen(fangzhen_daxiao + 1, vector<int>(fangzhen_daxiao + 1, 0));
+    vector<vector<int>> fangzhen(n + 1, vector<int>(n + 1, 0));
     
     // 处理火把
-    for(int i = 0; i < huoba_shuliang; i++) {
+    for(int shuzu_i = 0; shuzu_i < m; shuzu_i++) {
         int x, y;
         cin >> x >> y;
         
         // 火把照亮范围
         // 中心十字
-        for(int j = -2; j <= 2; j++) {
-            if(x + j > 0 && x + j <= fangzhen_daxiao) fangzhen[x+j][y] = 1;
-            if(y + j > 0 && y + j <= fangzhen_daxiao) fangzhen[x][y+j] = 1;
+        for(int pianyi = -2; pianyi <= 2; pianyi++) {
+            if(x + pianyi > 0 && x + pianyi <= n) 
+                fangzhen[x+pianyi][y] = 1;
+            if(y + pianyi > 0 && y + pianyi <= n) 
+                fangzhen[x][y+pianyi] = 1;
         }
         // 对角线部分
-        for(int j = -1; j <= 1; j++) {
-            for(int k = -1; k <= 1; k++) {
-                if(x + j > 0 && x + j <= fangzhen_daxiao && 
-                   y + k > 0 && y + k <= fangzhen_daxiao)
-                    fangzhen[x+j][y+k] = 1;
+        for(int pianyi_x = -1; pianyi_x <= 1; pianyi_x++) {
+            for(int pianyi_y = -1; pianyi_y <= 1; pianyi_y++) {
+                if(x + pianyi_x > 0 && x + pianyi_x <= n && 
+                   y + pianyi_y > 0 && y + pianyi_y <= n)
+                    fangzhen[x+pianyi_x][y+pianyi_y] = 1;
             }
         }
     }
     
     // 处理萤石
-    for(int i = 0; i < yingshi_shuliang; i++) {
-        int x, y;
-        cin >> x >> y;
+    for(int shuzu_i = 0; shuzu_i < k; shuzu_i++) {
+        int o, p;
+        cin >> o >> p;
         
         // 萤石照亮范围是5x5的正方形
-        for(int j = -2; j <= 2; j++) {
-            for(int k = -2; k <= 2; k++) {
-                if(x + j > 0 && x + j <= fangzhen_daxiao && 
-                   y + k > 0 && y + k <= fangzhen_daxiao)
-                    fangzhen[x+j][y+k] = 1;
+        for(int pianyi_x = -2; pianyi_x <= 2; pianyi_x++) {
+            for(int pianyi_y = -2; pianyi_y <= 2; pianyi_y++) {
+                if(o + pianyi_x > 0 && o + pianyi_x <= n && 
+                   p + pianyi_y > 0 && p + pianyi_y <= n)
+                    fangzhen[o+pianyi_x][p+pianyi_y] = 1;
             }
         }
     }
     
     // 统计暗的地方(会生成怪物的地方)
     int guaiwu_shuliang = 0;
-    for(int i = 1; i <= fangzhen_daxiao; i++) {
-        for(int j = 1; j <= fangzhen_daxiao; j++) {
-            if(fangzhen[i][j] == 0) guaiwu_shuliang++;
+    for(int hang = 1; hang <= n; hang++) {
+        for(int lie = 1; lie <= n; lie++) {
+            if(fangzhen[hang][lie] == 0) guaiwu_shuliang++;
         }
     }
     
@@ -98,7 +100,7 @@ int main() {
 
 2. 边界检查很重要
 - 在处理火把和萤石照亮范围时要检查坐标是否越界
-- 使用 x+j > 0 && x+j <= fangzhen_daxiao 等条件判断
+- 使用 x+pianyi_x > 0 && x+pianyi_x <= n 等条件判断
 
 3. 火把照亮范围的处理
 - 分为十字形和对角线两部分处理
@@ -111,7 +113,7 @@ int main() {
 
 5. 统计未照亮区域
 - 遍历整个方阵
-- 计数fangzhen[i][j] == 0的格子数量
+- 计数fangzhen[hang][lie] == 0的格子数量
 
 6. 代码结构清晰
 - 分别处理火把、萤石

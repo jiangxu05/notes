@@ -42,11 +42,15 @@ int main() {
             for(int k = j + 1; k < shuzi_geshu; k++) {
                 // 跳过当前检查的数字
                 if(i == j || i == k) continue;
+                //具体来说，当 i == j 或 i == k 时，continue 会跳过当前 k 循环的剩余部分，直接进入下一次 k 循环的迭代。这是因为 continue 语句只会影响它所在的最内层循环。
+
+
                 
                 // 如果找到两个数之和等于当前数
                 if(shuzu[j] + shuzu[k] == shuzu[i]) {
                     jieguo++;
                     break; // 找到一组就可以跳出内层循环
+                    //如果没有 break，程序会继续检查 j = 0，k = 2 等其他组合，但这些组合要么不满足条件，要么是重复的，增加了不必要的计算。
                 }
             }
         }
@@ -55,3 +59,57 @@ int main() {
     cout << jieguo << endl;
     return 0;
 }
+/*
+问题分析:
+1. 当前代码的主要问题是在找到一组满足条件的组合后,只跳出了最内层的k循环,
+   但j循环还在继续。这可能导致同一个数被重复计算多次。
+
+2. 例如对于输入: 4 1 2 3 4
+   当检查数字3时:
+   - 找到1+2=3,计数加1
+   - 由于只break了k循环,j循环继续
+   - 可能又找到其他组合(如2+1=3),导致重复计数
+
+3. 解决方案:
+   - 在找到一组满足条件的组合后,应该直接跳出j和k的双重循环
+   - 使用标志变量实现
+*/
+
+// 修正后的代码:
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int shuzi_geshu;
+    cin >> shuzi_geshu;
+    
+    vector<int> shuzu(shuzi_geshu);
+    for(int i = 0; i < shuzi_geshu; i++) {
+        cin >> shuzu[i];
+    }
+    
+    int jieguo = 0;
+    
+    for(int i = 0; i < shuzi_geshu; i++) {
+        bool found = false;  // 标志变量
+        //在 j 和 k 循环的条件中，加入了 && !found。
+        //如果 found 为 true，则 !found 为 false，循环条件不满足，内层循环会立即终止。
+        //这样可以避免在找到满足条件的组合后，继续检查其他不必要的组合。
+        for(int j = 0; j < shuzi_geshu && !found; j++) {
+            if(i == j) continue;
+            for(int k = j + 1; k < shuzi_geshu && !found; k++) {
+                if(i == k) continue;
+                
+                if(shuzu[j] + shuzu[k] == shuzu[i]) {
+                    jieguo++;
+                    found = true;  // 设置标志并跳出所有内层循环
+                }
+            }
+        }
+    }
+    
+    cout << jieguo << endl;
+    return 0;
+}
+
