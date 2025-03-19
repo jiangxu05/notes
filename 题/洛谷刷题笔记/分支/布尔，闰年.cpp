@@ -17,48 +17,8 @@ int main()
 }
 
 //判断闰年
-/*我的错误答案：
-    int n;
-    cin>>n;
-    bool a = 0, b = 0;
-    if (n%100==0 && n%400==0) {
-        a = 1;
-        cout << a <<endl;
-    }
-    if (n%4  ==0 && n%100!=0) {
-        b = 1;
-        cout << b <<endl;
-    }
-    else{
-        cout << 0<<endl;
-    }
-    return 0;
-} */
-int main1() {
-    int n;
-    cin >> n;
-    bool a = 0, b = 0;
-//闰年：能被4整除但不能被100整除，或者能被400整除
-    // 判断是否是闰年
-    if (n % 100 == 0) {
-        if (n % 400 == 0) {
-            a = 1; // 能被400整除的年份是闰年
-        }
-    } 
-    else {
-        if (n % 4 == 0) {
-            b = 1; // 不能被100整除且能被4整除的年份是闰年
-        }
-    }
-
-    // 输出结果
-    if (a || b) {
-        cout << 1 << endl; // 如果是闰年，输出1
-    } 
-    else {
-        cout << 0 << endl; // 如果不是闰年，输出0
-    }
-
-    return 0;
+    
+    bool runnian(int num){
+    if ((num % 4 == 0 && num % 100 != 0) || num % 400 == 0) return true;
+    else return false;
 }
-//背完再去手敲一遍

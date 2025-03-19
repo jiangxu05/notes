@@ -34,47 +34,98 @@
 // 0001000
 // 0001000
 // 1111111
+/*
+解题思路:
+1. 输入第一个数N表示点阵大小
+2. 后续数字交替表示连续的0和1的个数
+3. 按从左到右、从上到下的顺序:
+   - 用二维数组存储点阵
+   - 遍历压缩码,根据当前数字填充相应个数的0或1
+   - 每填满一行换到下一行
+4. 最后按格式输出点阵
+*/
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(){
+/*
+解题思路:
+1. 输入第一个数N表示点阵大小
+2. 后续数字交替表示连续的0和1的个数
+3. 按从左到右、从上到下的顺序:
+   - 用二维数组存储点阵
+   - 遍历压缩码,根据当前数字填充相应个数的0或1
+   - 每填满一行换到下一行
+4. 最后按格式输出点阵
+*/
+//我的
+    int n;
+    cin >> n;
+    vector<vector<int>> dianzhen(n,vector<int>(n,0));
+    vector<int> shuzi;
+    int m;
+    while(cin >> m) shuzi.push_back(m);
+    int hang = 0,lie = 0,now = 0;
+    for(size_t i = 0;i < shuzi.size();i++){
+        for(int j = 0; j < shuzi[i]; j++){
+            dianzhen[hang][lie] = now;
+            if(lie == n - 1){
+                lie = 0;
+                hang++;
+            }
+        }
+        now = 1 - now;
+    }
+    for(int i = 0; i < n-1; i++){
+        for(int j = 0; j < n-1;j++){
+            cout << dianzhen[i][j];
+        }
+        cout << endl;
+    }
+    return 0 ;
+    
+}
+//答案
 #include <iostream>
 #include <vector>
 using namespace std;
 
 int main() {
-    int daxiao; // 点阵大小N
-    cin >> daxiao;
-    
-    vector<int> yasuo; // 存储压缩码
-    int shuzi;
-    while(cin >> shuzi) {
-        yasuo.push_back(shuzi);
+    int n;
+    cin >> n; // 单独读取第一个数字 n
+
+    vector<vector<int>> dianzhen(n, vector<int>(n, 0)); // 初始化点阵
+    vector<int> shuzi;
+
+    // 读取剩余的压缩码
+    int m;
+    while (cin >> m) {
+        shuzi.push_back(m);
     }
-    
-    // 创建点阵数组
-    vector<vector<int>> dianzheng(daxiao, vector<int>(daxiao));
-    
-    int hang = 0, lie = 0; // 当前位置
-    int dangqian = 0; // 当前是0还是1
-    
-    // 遍历压缩码,从第二个数开始
-    for(int i = 1; i < yasuo.size(); i++) {
-        // 填充yasuo[i]个dangqian
-        for(int j = 0; j < yasuo[i]; j++) {
-            dianzheng[hang][lie] = dangqian;
+
+    int hang = 0, lie = 0;
+    int now = 0; // 初始填充 0
+
+    // 填充点阵
+    for (size_t i = 0; i < shuzi.size(); i++) { // 从第一个数字开始
+        for (int j = 0; j < shuzi[i]; j++) {
+            dianzhen[hang][lie] = now;
             lie++;
-            if(lie == daxiao) { // 如果到行尾
-                lie = 0; // 回到行首
-                hang++; // 下一行
+            if (lie == n) { // 换行
+                lie = 0;
+                hang++;
             }
         }
-        dangqian = 1 - dangqian; // 切换0和1
+        now = 1 - now; // 切换 0 和 1
     }
-    
+
     // 输出点阵
-    for(int i = 0; i < daxiao; i++) {
-        for(int j = 0; j < daxiao; j++) {
-            cout << dianzheng[i][j];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << dianzhen[i][j];
         }
         cout << endl;
     }
-    
+
     return 0;
 }
