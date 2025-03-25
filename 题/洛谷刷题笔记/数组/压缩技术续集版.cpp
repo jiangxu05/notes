@@ -32,77 +32,98 @@
 // 输出 #1复制
 
 // 7 3 1 6 1 6 4 3 1 6 1 6 1 3 7
-#include <iostream>
-#include <vector>
-#include <string>
+//正确
+#include<iostream>
+#include<vector>
+#include<string>
 using namespace std;
-
-int main() {
-    // 读入点阵大小N并存储点阵
+int main(){
     string diyihang;
     cin >> diyihang;
-    int dianzheng_daxiao = diyihang.length();
-    
-    // 创建二维数组存储点阵
-    vector<vector<char>> dianzheng(dianzheng_daxiao, vector<char>(dianzheng_daxiao));
-    dianzheng[0] = vector<char>(diyihang.begin(), diyihang.end());
-    
-    // 读入剩余行
-    for(int i = 1; i < dianzheng_daxiao; i++) {
+    int n = diyihang.length();
+    cout << n << " ";
+    //存储点阵
+    //vector<vector<string>> dianzheng(n,vector<string>(n));
+    //这里使用了 vector<string> 来存储点阵，但实际上我们只需要存储单个字符，应该使用：
+    vector<vector<char>> dianzheng(n,vector<char>(n));
+    dianzheng[0] = vector<char>(diyihang.begin(),diyihang.end());
+    for(int i = 1; i < n; i++){
         string hang;
         cin >> hang;
-        dianzheng[i] = vector<char>(hang.begin(), hang.end());
+        dianzheng[i] = vector<char>(hang.begin(),hang.end());
     }
-    
-    // 输出点阵大小
-    cout << dianzheng_daxiao << " ";
-    
-    // 计算压缩码
-    int lianxu_geshu = 0;  // 记录连续的0或1的个数
-    char dangqian_zifu = '0';  // 当前应该计数的字符(0或1)
-    
-    // 按照从左到右,从上到下的顺序遍历
-    for(int i = 0; i < dianzheng_daxiao; i++) {
-        for(int j = 0; j < dianzheng_daxiao; j++) {
-            if(dianzheng[i][j] == dangqian_zifu) {
-                lianxu_geshu++;
-            } else {
-                // 输出之前累积的连续个数
-                cout << lianxu_geshu << " ";
-                // 重置计数器并切换当前字符
-                lianxu_geshu = 1;
-                dangqian_zifu = dianzheng[i][j];
+    //输出对应的个数
+    int cnt = 0;
+    char dangqian = '0';
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(dianzheng[i][j] == dangqian) cnt++;
+            else{
+                cout << cnt <<" ";
+                cnt = 1;
+                dangqian = dianzheng[i][j];
             }
         }
     }
-    // 输出最后一组连续数
-    cout << lianxu_geshu << endl;
-    
+    cout << cnt <<endl;
+    return 0;
+}
+//我的错误
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int main(){
+    string diyihang;
+    cin >> diyihang;
+    int n = diyihang.length();
+    cout << n << " ";
+    //存储点阵
+
+    vector<vector<char>> dianzheng(n,vector<char>(n));
+    for(int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            cin >> dianzheng[i][j];
+        }
+    }
+    //输出对应的个数
+    int cnt = 0;
+    char dangqian = '0';
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(dianzheng[i][j] == dangqian) cnt++;
+            else{
+                cout << cnt <<" ";
+                cnt = 1;
+                dangqian = dianzheng[i][j];
+            }
+        }
+    }
+    cout << cnt <<endl;
     return 0;
 }
 
-/*
-本题的难点和关键点:
 
-1. 输入处理
-- 第一行需要特殊处理来获取点阵大小
-- 使用string来读取每一行,避免空格问题
+//note
+// 问题出在输入方式上：
+// 正确代码：
 
-2. 压缩算法的实现
-- 需要记录当前应该统计的字符(0或1)
-- 需要计数连续出现的次数
-- 遇到不同字符时输出计数并重置
+// 先读取第一行字符串，然后根据这个字符串的长度确定点阵的大小。
 
-3. 遍历顺序
-- 按照从左到右,从上到下的顺序
-- 使用双重循环实现
+// 接着，按行读取剩下的输入，每一行直接存到点阵中。
 
-4. 输出格式
-- 第一个数是点阵大小N
-- 后面的数交替表示0和1的连续个数
-- 最后一个数需要特别处理
+// 这种方式适合输入是按行提供的情况。
 
-5. 数据结构选择
-- 使用vector<vector<char>>存储点阵
-- 方便访问和处理二维数据
-*/
+// 错误代码：
+
+// 也是先读取第一行字符串，确定点阵大小。
+
+// 但它接着逐个字符读取输入，假设输入是一个一个字符提供的。
+
+// 这种方式适合输入是逐个字符提供的情况。
+
+// 为什么会有差别？
+// 如果你的输入是按行提供的（比如一行一行输入），错误代码会出错，因为它试图逐个字符读取，可能会读到换行符或其他乱七八糟的东西。
+
+// 正确代码则是按行读取，完全匹配按行输入的情况。
+

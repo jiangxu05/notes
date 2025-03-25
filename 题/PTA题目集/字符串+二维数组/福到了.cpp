@@ -25,6 +25,53 @@
 
 #include <iostream>
 #include <vector>
+using namespace std;
+
+int main() {
+    char c;
+    int n;
+    cin >> c >> n;
+    cin.ignore(); // 忽略第一行的换行符
+
+    // 读取网格
+    vector<vector<char>> dianzheng(n);
+    for (int i = 0; i < n; i++) {
+        string hang;
+        getline(cin, hang); // 逐行读取
+        dianzheng[i] = vector<char>(hang.begin(), hang.end()); // 存入二维数组
+    }
+
+    // 检查对称性
+    bool duicheng = true;
+    for (int i = 0; i < n && duicheng; i++) {
+        for (int j = 0; j < n && duicheng; j++) {
+            if (dianzheng[i][j] != dianzheng[n - 1 - i][n - 1 - j]) {
+                duicheng = false;
+            }
+        }
+    }
+
+    // 输出结果
+    if (duicheng) {
+        cout << "bu yong dao le" << endl;
+    }
+
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = n - 1; j >= 0; j--) {
+            if (dianzheng[i][j] == '@') {
+                cout << c;
+            } else {
+                cout << " ";
+            }
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+//以下答案错误，cin会跳过空格
+#include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
