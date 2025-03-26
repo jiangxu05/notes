@@ -24,5 +24,51 @@
 // 输出 #2复制
 
 // -1
+#include<iostream>
+#include<string>
+#include<cctype>
+using namespace std;
+
+int main() {
+    string word, article;
+    cin >> word;
+    cin.ignore(); // 吸收换行符
+    getline(cin, article);
+    
+   // 将单词和文章都转为小写以便比较
+    for(char &c : word) c = tolower(c);
+    for(char &c : article) c = tolower( c);
+    
+    int count = 0, firstPos = -1;
+    int pos = 0;
+    
+    while(pos < article.length()) {
+        // 找到单词的起始位置
+        while(pos < article.length() && !isalpha(article[pos])) pos++;
+        if(pos >= article.length()) break;
+        
+        int wordStart = pos;
+        // 找到单词的结束位置
+        while(pos < article.length() && isalpha(article[pos])) pos++;
+        
+        // 截取当前单词
+        string curWord = article.substr(wordStart, pos - wordStart);
+        
+        // 比较是否匹配
+        if(curWord == word) {
+            count++;
+            if(firstPos == -1) firstPos = wordStart;
+        }
+    }
+    
+    if(count > 0) {
+        cout << count << " " << firstPos;
+    } else {
+        cout << -1;
+    }
+    
+    return 0;
+}
+
 
 
