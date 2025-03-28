@@ -45,7 +45,6 @@ int main() {
     while(pos < article.length()) {
         // 找到单词的起始位置
         while(pos < article.length() && !isalpha(article[pos])) pos++;
-        if(pos >= article.length()) break;
         
         int wordStart = pos;
         // 找到单词的结束位置
@@ -70,5 +69,20 @@ int main() {
     return 0;
 }
 
-
-
+//note：自己写了几次，交了几次，问题有：
+//1.读取文章没有用getline读入空格
+//2.循环语句的判断不知道什么时候用等于，小于等于，
+//    - 结合本题的while循环解释：
+//      * 在第一个while循环中：while(pos < article.length())
+//        - 这里用 < 而不是 <= 是因为字符串的索引从0开始
+//        - 比如文章长度是10，有效索引是0-9
+//        - 当pos=10时，已经超出范围，不应该再进入循环
+//      * 在第二个while循环中：while(pos < article.length() && !isalpha(article[pos]))
+//        - 同样用 < 来确保不会访问到不存在的字符
+//        - 比如文章是"hello world"，长度是11
+//        - 当pos=11时，article[11]是无效访问
+//      * 在第三个while循环中：while(pos < article.length() && isalpha(article[pos]))
+//        - 用 < 来安全地遍历每个字母
+//        - 当遇到空格或字符串结尾时停止
+//      * 总结：在遍历字符串时，总是用 < length() 来确保不会越界访问
+//3.tolower函数没有赋值：c = ；并且不能加const

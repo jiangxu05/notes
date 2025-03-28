@@ -1,161 +1,184 @@
-//函数题
-//1题面：水仙花数是指一个三位正整数，它的每个位上的数字的3 次幂之和等于它本身。例如：153=1，则153 是水仙花数。 本题要求编写一个函数判断给定整数是否是水仙花数。
-#include<cmath>
-bool narcissistic( int number ){
-    if(number > 99 && number <1000){
-        if(number == pow((number/100),3) + pow(number/10%10,3) + pow (number%10,3))
-        return true;
-        else return false;
-    }
-    else return false;
+// 九九乘法表
+//c++中右对齐是：setw(n) 的参数必须是非负整数，设置的是最小字段宽度
+
+// 对齐方向由格式标志控制，与 setw 参数正负无关：
+
+// left：左对齐（默认适用于字符串）
+
+// right：右对齐（默认适用于数字）
+
+// internal：符号左对齐，数值右对齐
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    for(int i = 1; i <= 9; i++){
+        for(int j = 1; j <= i; j++){
+            cout << i <<"*"<<j<<"="<<left<<setw(2)<<i*j<<" ";
         }
-
-//2:编写getDis 函数，计算平面坐标系内两点的距离。
-double getDis(double x1, double y1,double x2,double y2){
-    double ans = 0.0;
-    return pow(pow((y2-y1),2)+pow((x2 - x1),2),0.5);
-}
-//3:月用电量50 千瓦时（含50 千瓦时）以内的，电价为0.53 元/千瓦时；超过50 千瓦时的，超出部分的用电量，电价上调0.05 元/千瓦时。若电量小于等于0，输出0。请编写程序在主函数中输入用电量，然后调用函数计算电费并在主函数中输出。
-
-double getCost(double x){
-    if(x <= 0) return 0;
-    else{
-        if(x <= 50.0) return 0.53*x;
-        else return 0.53*50 + 0.58*(x - 50);
+        cout << endl;
     }
 }
-//4求pi值
-double pai() {
-    double ans = 1.0;
-    double temp = 1.0;
-    double n = 1.0; 
 
-    while (temp >= 1e-8) {
-        temp *= n / (2 * n + 1); 
-        ans += temp;
-        n += 1.0; 
+
+//打印棱形
+#include<iostream>
+using namespace std;
+
+int main(){
+    int n;
+    cin >> n;
+    
+    // 打印上半部分（包括中间行）
+    for(int i = 0; i < n / 2 + 1; i++){
+        // 打印空格：每行空格数 = 总行数/2 - 当前行号
+        for(int j = 0; j < n / 2 - i; j++){
+            cout << " ";
+        }
+        // 打印星号：每行星号数 = 2*当前行号 + 1
+        for(int j = 0; j < 2 * i + 1; j++){
+            cout << "*";
+        }
+        cout << endl;
     }
+    
+    // 打印下半部分
+    for(int i = n / 2 - 1; i >= 0; i--){
+        // 打印空格：与上半部分对称,,,注意这个 对称哈。。。。。。
+        for(int j = 0; j < n / 2 - i; j++){
+            cout << " ";
+        }
+        // 打印星号：与上半部分对称
+        for(int j = 0; j < 2 * i + 1; j++){
+            cout << "*";
+        }
+        cout << endl;
+    }
+    
+    return 0;
+}
+//求1000以内的完数。说明：一个数如果恰好等于它的因子之和（自身除外），则称该数为完数，例如6=1+2+3，28=1+2+4+7+14，则6和28都为完数。
 
-    return 2 * ans; 
+// 输入格式:
+// 无
+
+// 输出格式:
+// 逐行每个完数的因子累加形式的分解式，每个完数占一行，格式为“完数 = 因子1 + 因子2 + ... + 因子k”，其中完数和因子均按递增顺序给出。
+
+// 输入样例:
+// 无
+// 部分输出样例:
+// 6=1+2+3
+// 28=1+2+4+7+14
+// ...
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 判断是否为完数，并收集所有真因子
+
+//真因子定义：能整除 num 且小于 num 的正整数。
+
+//最大真因子范围：
+//对于任意 num > 2，其最大真因子不会超过 num/2。
+bool isPerfect(int num, vector<int>& factors) {
+    factors.clear();
+    int sum = 0;
+    for (int i = 1; i <= num / 2; ++i) { // 遍历到num/2即可
+        if (num % i == 0) {
+            factors.push_back(i);
+            sum += i;
+        }
+    }
+    return sum == num;
 }
 
-//5gcd函数
-int gcd(int m,int n){
-    while(n != 0){
-        int temp;
-        temp = n;
-        n = m % n;
-        m = temp;
+int main() {
+    vector<int> factors;
+    for (int i = 6; i <= 1000; ++i) { // 完数最小为6
+        if (isPerfect(i, factors)) {
+            // 格式化输出
+            cout << i << "=";
+            for (size_t j = 0; j < factors.size(); ++j) {
+                cout << factors[j];
+                if (j != factors.size() - 1) {
+                    cout << "+";
+                }
+            }
+            cout << endl;
+        }
     }
-    return m;
+    return 0;
 }
 
-//编程题
-//1幸运数
-#include <bits/stdc++.h>
+
+//
+// 打印沙漏：本题要求你写个程序把给定的符号打印成沙漏的形状。所谓“沙漏形状”，是指每行输出奇数个符号；各行符号中心对齐；相邻两行符号数差2；符号数先从大到小顺序递减到1，再从小到大顺序递增；首尾符号数相等。给定任意N个符号，不一定能正好组成一个沙漏。要求打印出的沙漏能用掉尽可能多的符号。
+
+// 输入格式:
+// 输入在一行给出1个正整数N（<=1000）和一个符号，中间以空格分隔。
+
+// 输出格式:
+// 首先打印出由给定符号组成的最大的沙漏形状，最后在一行中输出剩下没用掉的符号数。
+
+// 输入样例:
+// 19 *
+// 输出样例:
+// *****
+//  ***
+//   *
+//  ***
+// *****
+// 2
+
+#include <iostream>
+#include <cmath>
 using namespace std;
 
 int main() {
-    long long n;
-    cin >> n;
-    int cnt4 = 0, cnt7 = 0;
-
-    if (n >= 4) {
-        long long temp = n;
-        while (temp % 4 == 0) {
-            cnt4++;
-            temp /= 4;
+    int N;
+    char c;
+    cin >> N >> c;
+    
+    // 计算最大行数
+    // 沙漏的总符号数公式为：2*k^2 - 1 <= N
+    // 其中k为最大行数的一半（向上取整）
+    int k = sqrt((N + 1) / 2);
+    int maxLine = 2 * k - 1;  // 最大行数
+    int used = 2 * k * k - 1; // 使用的符号数
+    
+    // 打印上半部分（包括中间行）
+    for(int i = 0; i < k; i++) {
+        // 打印空格
+        for(int j = 0; j < i; j++) {
+            cout << " ";
         }
-    }
-
-    if (n >= 7) {
-        long long temp = n;
-        while (temp % 7 == 0) {
-            cnt7++;
-            temp /= 7;
+        // 打印符号
+        for(int j = 0; j < maxLine - 2 * i; j++) {
+            cout << c;
         }
+        cout << endl;
     }
-
-    cout << cnt4 << " " << cnt7 << endl;
+    
+    // 打印下半部分
+    for(int i = k - 2; i >= 0; i--) {
+        // 打印空格
+        for(int j = 0; j < i; j++) {
+            cout << " ";
+        }
+        // 打印符号
+        for(int j = 0; j < maxLine - 2 * i; j++) {
+            cout << c;
+        }
+        cout << endl;
+    }
+    
+    // 输出剩余符号数
+    cout << N - used << endl;
+    
     return 0;
 }
-//2第一行一个整数n，表示星星的数量。
-//接下来共n行，每行2个正整数(a,b)，表示该星星到X轴距离为b，到Y轴距离为a，这些星星只会位于X轴的上方，Y轴的右方。
-//输入数据保证存在一个合法的正方形（面积非零）去覆盖这些星星
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<cmath>
-using namespace std;
-int main(){
-    int n ;
-    cin >> n;
-    vector<int> xzuobiao(n,0);
-    vector<int> yzuobiao(n,0);
+// 数学推导：
+// 设层数为k（上半部分层数），则：
+// 上半部分符号总数 = (2k-1) + (2k-3) + ... +3 +1 = k²
+// 整个沙漏符号数 = 2(k² -1) +1 = 2k² -1
 
-    for(int i = 0; i < n; i++){
-        cin >> xzuobiao[i] >> yzuobiao[i];
-    }
-
-    sort(xzuobiao.begin(),xzuobiao.end());
-    sort(yzuobiao.begin(),yzuobiao.end());
-
-    int xchazhi = xzuobiao.back() - xzuobiao.front();
-    int ychazhi = yzuobiao.back() - yzuobiao.front();
-    long long ans = pow(max(xchazhi,ychazhi),2);
-    cout << ans << endl;
-    return 0;
-}
-
-//3输出给定年份区间之内的所有闰年；输出[begin, end]区间内所有的闰年。
-//每个年份占6列（右对齐），每5个闰年换一行。
-#include<bits/stdc++.h>
-using namespace std;
-bool runnian(int num){
-    if ((num % 4 == 0 && num % 100 != 0) || num % 400 == 0) return true;
-    else return false;
-}
-int main(){
-    int m,n;
-    cin >> m >> n;
-        int cnt = 0;
-    for(int i = m; i <= n; i++){
-
-        if(runnian(i)){
-            cout <<setw(6)<<i;
-            cnt++;
-            if(cnt == 5){
-                cout << endl;
-                cnt = 0;
-            }
-        }
-    }
-    return 0;
-}
-//4信有一队兵，他想知道有多少人，便让士兵排队报数。
-// 按3人成行排列，多2人；
-// 按5人成行排列，多3人；
-// 按7人成行排列，多2人；
-// 请问韩信至少有多少兵？
-// 请输入两个正整数A和B（A<B），输出A和B间第一个满足条件的数，如果不存在输出no。
-// 输入格式:
-// 输入两个正整数：A B
-// 输出格式:
-// 如果存在满足条件的数C输出：C
-// 否则输出：no
-
-#include<iostream>
-using namespace std;
-int main(){
-    int a,b;
-    cin >> a >> b;
-    int cnt = 0;
-    for(int i = a; i <= b; i++){
-        if((i%3 == 2) && (i % 5 == 3)&& (i%7==2)) {
-            cout << i;
-            cnt++;
-        }
-    }
-    if(cnt == 0) cout <<"no"<<endl;
-    return 0;
-}

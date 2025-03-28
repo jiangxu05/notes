@@ -11,10 +11,8 @@ using namespace std;
 
 int main(){
     string s;
-    cin >> s;
-    for(int i = 0; i < s.length(); i++){
-        if(s[i] >= 'a' && s[i] <= 'z') s[i] = s[i] - 32;
-    }
+    getline(cin, s);
+    for(auto &c : s) c = toupper(c);
     cout << s << endl;
     return 0;
 }
