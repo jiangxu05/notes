@@ -30,57 +30,51 @@
 // 10
 // 46-64=-18
 // 9
+//my code
 #include<iostream>
 #include<string>
 using namespace std;
-
-int main() {
-    int i;
-    cin >> i;
-    char lastOp = 'a'; // 默认初始化为加法，因为第一个算式必须指定运算符
-    
-    while(i--) {
-        string s1, s2;
+int main(){
+    int n;
+    cin >> n;
+    char lastop = 'a';
+    while(n--){
+        string s1,s2,s3;
         char op;
         cin >> s1;
+        int num1,num2,ans;
+        string jieguo;
         
-        // 判断输入的是运算符还是数字
-        if(s1 == "a" || s1 == "b" || s1 == "c") {
-            op = s1[0];  // 获取运算符
-            cin >> s1 >> s2;  // 读取两个操作数
-            lastOp = op;  // 更新最后使用的运算符
-        } else {
-            cin >> s2;  // 只读取第二个操作数
-            op = lastOp;  // 使用上次的运算符
+        if(s1[0] =='a'|| s1[0] =='b'||s1[0] =='c'){
+            op = s1[0];
+            cin >> s2 >> s3;
+            lastop = op;
+            num1 = stoi(s2);
+            num2 = stoi(s3);
         }
-        
-        // 将字符串转换为数字
-        int num1 = stoi(s1);
-        int num2 = stoi(s2);
-        int result;
-        string equation;
-        
-        // 根据运算符进行计算
-        switch(op) {
-            case 'a':
-                result = num1 + num2;
-                equation = to_string(num1) + "+" + to_string(num2) + "=" + to_string(result);
-                break;
-            case 'b':
-                result = num1 - num2;
-                equation = to_string(num1) + "-" + to_string(num2) + "=" + to_string(result);
-                break;
-            case 'c':
-                result = num1 * num2;
-                equation = to_string(num1) + "*" + to_string(num2) + "=" + to_string(result);
-                break;
+        else{
+            cin >> s2;
+            op = lastop;
+            num1 = stoi(s1);
+            num2 = stoi(s2);
         }
-        
-        // 输出结果
-        cout << equation << endl;
-        cout << equation.length() << endl;
-    }
-    
-    return 0;
-}
 
+        switch(op){
+            case 'a':
+                ans = num1+num2;
+                changdu = to_string(num1)+"+"+to_string(num2)+"="+to_string(ans);
+            break;
+            case 'b':
+                ans = num1-num2;
+                changdu = to_string(num1)+"-"+to_string(num2)+"="+to_string(ans);
+            break;
+            case 'c':
+                ans = num1*num2;
+                changdu = to_string(num1)+"*"+to_string(num2)+"="+to_string(ans);
+            break;
+        }
+    cout << jieguo<< endl;
+    cout << jieguo.length()<<endl;
+    }
+    return 0;
+}//ok AC

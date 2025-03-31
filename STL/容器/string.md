@@ -73,7 +73,133 @@ void test2(){
 void test3(){
     string str3 ="我";
     str3 += "爱学习";  //也可以strn1 + strn2;
-    str4 = "肯定必须一定“;
-    str4.append(str3,4，2);//变成一定我爱学习
+    str4 = "肯定必须一定"
+    str4.append(str3,4,2);//变成一定我爱学习
 }
 ```
+
+# 类型转换（C++11新增）
+
+## 字符串与数值转换
+以下函数需包含`<string>`头文件，支持进制转换和异常处理：
+
+### 转换函数族
+| 函数原型                  | 功能描述                     | 示例                     |
+|---------------------------|------------------------------|--------------------------|
+| `int stoi(const string&)`  | 字符串转 int                 | `stoi("42") → 42`        |
+| `long stol(...)`           | 字符串转 long                | `stol("3e9") → 3000000000`|
+| `float stof(...)`          | 字符串转 float               | `stof("3.14") → 3.14f`   |
+| `double stod(...)`         | 字符串转 double              | `stod("2.718") → 2.718`  |
+| `unsigned long stoul(...)` | 字符串转 unsigned long       | `stoul("4000000000") → 4e9` |
+
+
+
+### 实用技巧
+1. **进制转换**：
+   ```cpp
+   stoi("1010", nullptr, 2);  // 二进制 → 10
+   stol("FF", nullptr, 16);   // 十六进制 → 255
+   ```
+
+2. **混合数据解析**：
+   ```cpp
+   string s = "ID:0x1A,Val:3.14";
+   size_t pos = s.find("0x");//pos=3;
+   int id = stoi(s.substr(pos), nullptr, 16);  // 解析十六进制
+   ```
+   **参数解析**：
+    - `hex_part`：要转换的字符串 `"0x1A,Val:3.14"`。
+    - `nullptr`：不接收处理结束位置。
+    - `16`：按十六进制解析。
+    *转换过程**：
+    1. **跳过前缀**：自动忽略 `0x`（C++标准规定十六进制字符串可以带 `0x` 前缀）。
+    2. **读取有效字符**：
+    - 有效字符：`1`, `A`（十六进制允许 `A-F` 表示10-15）。
+    - 遇到非十六进制字符 `,` 停止。
+    3. **转换计算**：
+    - `1A`（十六进制）→ `1*16 + 10 = 26`（十进制）。
+
+
+```cpp
+#include <string>
+
+int num = 42;
+double d = 3.14;
+
+string s1 = to_string(num);  // "42"
+string s2 = to_string(d);    // "3.140000"（精度可能不理想）
+```
+**特点**：
+- 支持基本数值类型（int, long, double 等）
+- 浮点数转换可能包含多余小数位
+- 需要C++11或更高标准
+---
+
+### **2. 使用 `stringstream`（兼容性好）**
+```cpp
+#include <sstream>
+#include <string>
+
+template<typename T>
+string to_string_ex(T value) {
+    stringstream ss;
+    ss << value;
+    return ss.str();
+}
+
+// 使用示例
+int num = 26;
+double d = 3.1415926;
+string s1 = to_string_ex(num);  // "26"
+string s2 = to_string_ex(d);    // "3.14159"（保留默认精度）
+```
+
+**优势**：
+- 支持自定义格式（如精度控制）
+- 兼容C++98标准
+- 可扩展性高（支持自定义类型）
+
+**设置浮点数精度**：
+```cpp
+#include <iomanip>
+
+double d = 3.1415926;
+stringstream ss;
+ss << fixed << setprecision(2) << d;  // 固定小数点，保留2位
+string s = ss.str();  // "3.14"
+```
+
+### **实用技巧**
+1. **浮点数保留两位小数**：
+   ```cpp
+   double d = 3.1415;
+   stringstream ss;
+   ss << fixed << setprecision(2) << d;  // "3.14"
+   ```
+
+2. **格式化十六进制输出**：
+   ```cpp
+   int num = 255;
+   stringstream ss;
+   ss << uppercase << hex << num;  // "FF"
+   ```
+
+3. **填充前导零**：
+   ```cpp
+   int num = 42;
+   stringstream ss;
+   ss << setw(5) << setfill('0') << num;  // "00042"
+   ```
+
+---
+
+### **常见问题**
+**Q：为什么 `to_string(3.14)` 得到 `"3.140000"`？**
+- `to_string` 对浮点数的转换使用默认精度（通常6位小数），无法自动去除末尾零。
+
+**Q：如何将布尔值转换为 `"true"/"false"`？**
+- 使用三元运算符：
+  ```cpp
+  bool b = true;
+  string s = b ? "true" : "false";
+  ```
