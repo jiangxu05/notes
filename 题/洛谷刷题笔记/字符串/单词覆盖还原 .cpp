@@ -27,26 +27,23 @@ using namespace std;
 
 int main() {
     string s;
-    getline(cin, s);  // 读取整行输入
+    getline(cin, s);
     
     int boyCount = 0, girlCount = 0;
     int len = s.length();
     
-    // 遍历字符串，查找boy和girl
-    for (int i = 0; i < len; ) {
-        if (s.substr(i, 3) == "boy") {  // 检查是否是boy
+    for (int i = 0; i < len; i++) {  // 改为逐字符遍历
+        // 检查boy（允许部分覆盖）
+        if (i+2 < len && (s[i]=='b'||s[i+1]=='o'||s[i+2]=='y')) {
             boyCount++;
-            i += 3;  // 跳过已匹配的字符
-        } else if (s.substr(i, 4) == "girl") {  // 检查是否是girl
-            girlCount++;
-            i += 4;  // 跳过已匹配的字符
-        } else {
-            i++;  // 如果不是，继续下一个字符
         }
-    }
+        // 检查girl（允许部分覆盖）
+        if (i+3 < len && (s[i]=='g'||s[i+1]=='i'||s[i+2]=='r'||s[i+3]=='l')) {
+            girlCount++;
+        }
+    } 
     
     cout << boyCount << endl;
     cout << girlCount << endl;
-    
     return 0;
 }
