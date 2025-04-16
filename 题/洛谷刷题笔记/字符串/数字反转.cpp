@@ -74,8 +74,11 @@ int main() {
         string newInt = reverseStr(intPart);
         string newDec = reverseStr(decPart);
         // 去除小数部分末尾的0
-        newDec.erase(newDec.find_last_not_of('0') + 1);
+
+        newDec.erase(newDec.find_last_not_of('0') + 1);//注意这个加一
+
         if (newDec.empty()) newDec = "0";  // 如果小数部分全为0，保留一个0
+        
         cout << newInt << "." << newDec << endl;
     }
     else if (s.find('/') != string::npos) {  // 分数
